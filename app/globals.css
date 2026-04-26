@@ -1,0 +1,171 @@
+@import "tailwindcss";
+
+:root {
+  --bg: #000000;
+  --fg: #c8f7c5;
+  --accent: #00ff88;
+  --accent-dim: #14532d;
+  --danger: #ff3860;
+  --ghost: #b399ff;
+  --muted: #4a5d4a;
+  --border: #1a3a1a;
+}
+
+@theme inline {
+  --color-background: var(--bg);
+  --color-foreground: var(--fg);
+  --color-accent: var(--accent);
+  --color-danger: var(--danger);
+  --color-ghost: var(--ghost);
+  --color-muted: var(--muted);
+  --color-border: var(--border);
+  --font-mono: var(--font-mono);
+}
+
+html,
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-mono), "JetBrains Mono", "Fira Code", "Menlo",
+    "Consolas", monospace;
+  font-feature-settings: "liga" 1, "calt" 1;
+  text-rendering: geometricPrecision;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* CRT scanline overlay (very subtle) */
+.scanlines::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.02) 0,
+    rgba(255, 255, 255, 0.02) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  z-index: 50;
+  mix-blend-mode: overlay;
+}
+
+.scanlines::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse at center,
+    transparent 60%,
+    rgba(0, 0, 0, 0.55) 100%
+  );
+  z-index: 51;
+}
+
+/* Cursor blink */
+@keyframes blink {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+.cursor {
+  display: inline-block;
+  width: 0.55ch;
+  background: var(--accent);
+  color: var(--accent);
+  animation: blink 1s steps(2, start) infinite;
+}
+
+/* Title flicker */
+@keyframes flicker {
+  0%,
+  19%,
+  21%,
+  23%,
+  25%,
+  54%,
+  56%,
+  100% {
+    text-shadow:
+      0 0 4px rgba(0, 255, 136, 0.65),
+      0 0 12px rgba(0, 255, 136, 0.35),
+      0 0 24px rgba(0, 255, 136, 0.18);
+    opacity: 1;
+  }
+  20%,
+  24%,
+  55% {
+    text-shadow: none;
+    opacity: 0.78;
+  }
+}
+.flicker {
+  animation: flicker 6s infinite;
+}
+
+/* Glitch */
+@keyframes glitch-x {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  20% {
+    transform: translate(-1px, 0);
+  }
+  40% {
+    transform: translate(1px, -1px);
+  }
+  60% {
+    transform: translate(-1px, 1px);
+  }
+  80% {
+    transform: translate(1px, 0);
+  }
+}
+.glitch {
+  position: relative;
+  display: inline-block;
+}
+.glitch::before,
+.glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  mix-blend-mode: screen;
+}
+.glitch::before {
+  color: #ff3860;
+  transform: translate(1px, 0);
+  clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
+  animation: glitch-x 2.4s infinite linear alternate-reverse;
+}
+.glitch::after {
+  color: #29c6ff;
+  transform: translate(-1px, 0);
+  clip-path: polygon(0 55%, 100% 55%, 100% 100%, 0 100%);
+  animation: glitch-x 3.1s infinite linear alternate;
+}
+
+/* Logo glow */
+.ghost-glow {
+  filter: drop-shadow(0 0 6px rgba(0, 255, 136, 0.45))
+    drop-shadow(0 0 18px rgba(0, 255, 136, 0.25));
+}
+
+/* Sharp edges enforcement */
+* {
+  border-radius: 0 !important;
+}
+
+/* Selection */
+::selection {
+  background: var(--accent);
+  color: #000;
+}
