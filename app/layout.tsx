@@ -9,7 +9,7 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "ghostpwn // autonomous web pentesting agent",
+  title: "GhostPWN // autonomous web pentesting agent",
   description:
     "GhostPWN is a Rust-based terminal assistant for offensive security research. Multi-provider LLM support, human-in-the-loop, lightweight architecture.",
 };

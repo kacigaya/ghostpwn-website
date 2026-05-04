@@ -72,7 +72,8 @@ export default function Home() {
         </p>
 
         <p className="pointer-events-none mt-3 max-w-xl text-center text-[11px] leading-relaxed tracking-[0.15em] uppercase text-white/55 mix-blend-difference">
-          rust terminal assistant for offensive security research · multi-provider LLM · human-in-the-loop · lightweight
+          rust terminal assistant for offensive security research ·
+          multi-provider LLM · human-in-the-loop · lightweight
         </p>
 
         <div className="pointer-events-none mt-8 flex flex-wrap items-center justify-center gap-3 text-[11px] tracking-[0.3em] uppercase">
