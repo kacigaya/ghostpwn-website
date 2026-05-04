@@ -81,7 +81,7 @@ export default function Home() {
             href={REPO}
             target="_blank"
             rel="noopener noreferrer"
-            className="pointer-events-auto border border-white/70 bg-black/30 px-4 py-2 text-white backdrop-blur-sm transition-colors hover:bg-white hover:text-black"
+            className="pointer-events-auto border border-white/70 bg-black/30 px-4 py-2 text-white transition-colors hover:bg-white hover:text-black"
           >
             github →
           </a>
@@ -89,7 +89,7 @@ export default function Home() {
             href={`${REPO}#readme`}
             target="_blank"
             rel="noopener noreferrer"
-            className="pointer-events-auto border border-white/30 bg-black/20 px-4 py-2 text-white/85 backdrop-blur-sm transition-colors hover:border-white hover:text-white"
+            className="pointer-events-auto border border-white/30 bg-black/20 px-4 py-2 text-white/85 transition-colors hover:border-white hover:text-white"
           >
             readme
           </a>
@@ -97,7 +97,7 @@ export default function Home() {
             href={`${REPO}.git`}
             target="_blank"
             rel="noopener noreferrer"
-            className="pointer-events-auto border border-white/30 bg-black/20 px-4 py-2 text-white/85 backdrop-blur-sm transition-colors hover:border-white hover:text-white"
+            className="pointer-events-auto border border-white/30 bg-black/20 px-4 py-2 text-white/85 transition-colors hover:border-white hover:text-white"
           >
             clone
           </a>
@@ -113,7 +113,7 @@ export default function Home() {
           {STACK.map((item) => (
             <div
               key={item.label}
-              className="flex flex-col gap-2 bg-black/70 p-6 backdrop-blur-md"
+              className="flex flex-col gap-2 bg-black/80 p-6"
             >
               <span className="text-[10px] tracking-[0.4em] uppercase text-white/45">
                 {item.label}
@@ -126,7 +126,7 @@ export default function Home() {
         </div>
 
         <div className="mt-16 grid gap-8 lg:grid-cols-2">
-          <div className="border border-white/15 bg-black/70 p-8 backdrop-blur-md">
+          <div className="border border-white/15 bg-black/80 p-8">
             <div className="mb-6 flex items-center justify-between">
               <h2 className="text-xs tracking-[0.5em] uppercase text-white">
                 features
@@ -147,7 +147,7 @@ export default function Home() {
             </ul>
           </div>
 
-          <div className="border border-white/15 bg-black/70 p-8 backdrop-blur-md">
+          <div className="border border-white/15 bg-black/80 p-8">
             <div className="mb-6 flex items-center justify-between">
               <h2 className="text-xs tracking-[0.5em] uppercase text-white">
                 providers
@@ -188,7 +188,7 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="mt-16 border border-white/15 bg-black/70 p-8 backdrop-blur-md">
+        <div className="mt-16 border border-white/15 bg-black/80 p-8">
           <div className="mb-6 flex items-center justify-between">
             <h2 className="text-xs tracking-[0.5em] uppercase text-white">
               quickstart
@@ -216,7 +216,7 @@ export default function Home() {
         </div>
       </section>
 
-      <footer className="pointer-events-none relative z-10 flex flex-wrap items-center justify-between gap-3 border-t border-white/10 bg-black/80 px-6 py-5 text-[10px] tracking-[0.4em] uppercase text-white/55 backdrop-blur-md">
+      <footer className="pointer-events-none relative z-10 flex flex-wrap items-center justify-between gap-3 border-t border-white/10 bg-black/90 px-6 py-5 text-[10px] tracking-[0.4em] uppercase text-white/55">
         <span>rust · ratatui · crossterm</span>
         <span className="hidden sm:inline">offensive security research</span>
         <span>built / for / hackers</span>

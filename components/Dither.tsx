@@ -1,7 +1,7 @@
 'use client';
 /* eslint-disable */
 // @ts-nocheck
-import { useRef, useEffect, forwardRef } from 'react';
+import { useRef, useEffect, useState, forwardRef } from 'react';
 import { Canvas, useFrame, useThree, ThreeEvent } from '@react-three/fiber';
 import { EffectComposer, wrapEffect } from '@react-three/postprocessing';
 import { Effect } from 'postprocessing';
@@ -63,7 +63,7 @@ float cnoise(vec2 P) {
   return 2.3 * mix(n_x.x, n_x.y, fade_xy.y);
 }
 
-const int OCTAVES = 4;
+const int OCTAVES = 3;
 float fbm(vec2 p) {
   float value = 0.0;
   float amp = 1.0;
@@ -204,6 +204,7 @@ function DitheredWaves({
 }: DitheredWavesProps) {
   const mesh = useRef<THREE.Mesh>(null);
   const mouseRef = useRef(new THREE.Vector2());
+  const lastFrameRef = useRef(0);
   const { viewport, size, gl } = useThree();
 
   const waveUniformsRef = useRef<WaveUniforms>({
@@ -230,10 +231,14 @@ function DitheredWaves({
 
   const prevColor = useRef([...waveColor]);
   useFrame(({ clock }) => {
+    const elapsed = clock.getElapsedTime();
+    if (elapsed - lastFrameRef.current < 1 / 30) return;
+    lastFrameRef.current = elapsed;
+
     const u = waveUniformsRef.current;
 
     if (!disableAnimation) {
-      u.time.value = clock.getElapsedTime();
+      u.time.value = elapsed;
     }
 
     if (u.waveSpeed.value !== waveSpeed) u.waveSpeed.value = waveSpeed;
@@ -311,24 +316,56 @@ export default function Dither({
   enableMouseInteraction = true,
   mouseRadius = 1
 }: DitherProps) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [isActive, setIsActive] = useState(true);
+
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const updateActive = (visible: boolean) => {
+      setIsActive(visible && document.visibilityState === 'visible');
+    };
+
+    const observer = new IntersectionObserver(
+      ([entry]) => updateActive(Boolean(entry?.isIntersecting)),
+      { threshold: 0 }
+    );
+
+    const handleVisibilityChange = () => {
+      updateActive(container.getBoundingClientRect().bottom >= 0);
+    };
+
+    observer.observe(container);
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
+    return () => {
+      observer.disconnect();
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
+  }, []);
+
   return (
-    <Canvas
-      className="w-full h-full relative"
-      camera={{ position: [0, 0, 6] }}
-      dpr={1}
-      gl={{ antialias: true, preserveDrawingBuffer: true }}
-    >
-      <DitheredWaves
-        waveSpeed={waveSpeed}
-        waveFrequency={waveFrequency}
-        waveAmplitude={waveAmplitude}
-        waveColor={waveColor}
-        colorNum={colorNum}
-        pixelSize={pixelSize}
-        disableAnimation={disableAnimation}
-        enableMouseInteraction={enableMouseInteraction}
-        mouseRadius={mouseRadius}
-      />
-    </Canvas>
+    <div ref={containerRef} className="relative h-full w-full" style={{ contain: 'paint' }}>
+      <Canvas
+        className="relative h-full w-full"
+        camera={{ position: [0, 0, 6] }}
+        dpr={1}
+        frameloop={isActive ? 'always' : 'demand'}
+        gl={{ antialias: false, powerPreference: 'high-performance' }}
+      >
+        <DitheredWaves
+          waveSpeed={waveSpeed}
+          waveFrequency={waveFrequency}
+          waveAmplitude={waveAmplitude}
+          waveColor={waveColor}
+          colorNum={colorNum}
+          pixelSize={pixelSize}
+          disableAnimation={disableAnimation || !isActive}
+          enableMouseInteraction={enableMouseInteraction && isActive}
+          mouseRadius={mouseRadius}
+        />
+      </Canvas>
+    </div>
   );
 }
